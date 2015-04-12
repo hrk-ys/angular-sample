@@ -7,7 +7,11 @@ var $ = require('gulp-load-plugins')();
 
 module.exports = function(options) {
   gulp.task('scripts', function () {
-    return gulp.src(options.src + '/app/**/*.coffee')
+    return gulp.src([
+        options.src + '/app/index.coffee',
+        options.src + '/app/resources/*coffee',
+        options.src + '/app/**/*.coffee'
+                              ])
       .pipe($.sourcemaps.init())
       .pipe($.coffeelint())
       .pipe($.coffeelint.reporter())
