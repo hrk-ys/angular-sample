@@ -1,7 +1,83 @@
-<h4>Timeline</h4>
+<h4>{{ title }}</h4>
+
+<form class="post-form">
+  <div class="form-group">
+    <textarea class="form-control" row="3" ng-model="content"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary" ng-click="post()">投稿</button>
+</form>
 
 <div class="row">
-  <div ng-repeat='post in posts'>
-    {{ post.caption }}
+  <div class="post panel-default" ng-repeat='post in posts | orderBy:"sort_value":true'>
+    <!-- post -->
+    <div class="panel-heading">
+      <div class="clearfix">
+        <img class="pull-left" ng-src="https://www.flat.place/static/share/assets/img/icon/{{ post.icon_id }}.png" width="20px" height="20px" />
+	      <div class="pull-left created-date">
+	        <div class="">{{ post.created_at*1000 | date:'yyyy-MM-dd hh:mm:ss' }}</div>
+        </div>
+		    <div class="pull-right">
+          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{ post.comment_count }}
+          <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ post.like_count }}
+          <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ post.dislike_count }}
+		    </div>
+	    </div>
+      <div class="content">{{ post.caption }}</div>
+      <div ng-if="post.mine" class="clearfix">
+        <button class="btn btn-link pull-right" ng-click="delete(post)">Delete</button>
+      </div>
+	  </div>
+    <!-- post end -->
+
+
+    <div class="panel-body">
+
+      <!-- comments -->
+      <!-- form -->
+      <div class="reply">
+        <form ng-submit="reply(post)">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="コメント" ng-model="post.reply_comment">
+          </div>
+        </form>
+      </div>
+      <!-- form end -->
+
+      <div class="no-comment" ng-if="post.comments == null || post.comments.length==0">
+        コメントなし
+      </div>
+
+
+      <div ng-if="post.comments.length>0" class="comment-list">
+        <ul>
+          <li class="comment" ng-repeat='comment in post.comments | orderBy:"created_at":true | limitTo:post.show_comment_num'>
+            <div class="clearfix">
+              <img class="pull-left" ng-src="https://www.flat.place/static/share/assets/img/icon/{{ comment.icon_id }}.png" width="20px" height="20px" />
+ 	            <div class="pull-left created-date">
+	              <div class="pull-left">{{ comment.created_at*1000 | date:'yyyy-MM-dd hh:mm:ss' }}</div>
+              </div>
+		          <div class="pull-right">
+                  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ comment.like_count }}
+                  <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ comment.dislike_count }}
+	            </div>
+	          </div>
+	          <div class="content">{{ comment.content }}</div>
+            <div ng-if="comment.mine" class="clearfix">
+              <button class="btn btn-link pull-right" ng-click="delete_comment(post, comment)">Delete</button>
+            </div>
+	        </li>
+        </ul>
+        <div ng-if="post.comments.length>post.show_comment_num" class="more-comment clearfix">
+          <button class="btn btn-link btn-xs pull-right" ng-click="add_show_comment_num(post)">もっとみる</button>
+        </div>
+      </div>
+      <!-- comments end -->
+
+    </div>
+
+  </div>
+
+  <div ng-if="has_more" class="clearfix has-more">
+    <button type="submit" class="btn btn-info" ng-click="load_content()">もっとみる</button>
   </div>
 </div>

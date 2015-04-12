@@ -43,5 +43,5 @@ angular.module 'angularSample', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
   .directive 'timeline', ()->
     restrict: 'EA'
     templateUrl: 'app/main/timeline.html',
-    scope: false
+    scope: { title: '@' }
     controller: 'Timeline'
