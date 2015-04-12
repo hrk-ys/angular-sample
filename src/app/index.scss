@@ -31,32 +31,41 @@
 
 .post {
   padding-bottom: 8px;
+  .company {
+    padding-top: 16px;
+  }
   .created-date {
     padding-left: 8px;
   }
   .content {
-	 padding-top: 8px;
+	 padding-top: 4px;
   }
 
   border-top: 1px solid rgb(202, 202, 202);
 }
 
 .comment-list {
-  margin-top: 8px;
-  padding-top: 8px;
-
+  //margin-top: 8px;
+  //padding-top: 8px;
+ .more-comment {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+  }
+  .comment {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgb(202, 202, 202);
+  }
 }
 .no-comment {
-  margin-top: 8px;
-  padding-top: 8px;
-  color: gray;
-}
-.more-comment {
-}
-.comment {
   margin-bottom: 8px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgb(202, 202, 202);
+  color: gray;
+}
+.reply {
+  .form-group {
+    margin-bottom: 0px !important;
+  }
 }
 
 .timeline {

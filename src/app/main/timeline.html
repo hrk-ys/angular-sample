@@ -22,6 +22,7 @@
           <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ post.dislike_count }}
 		    </div>
 	    </div>
+      <div class="company">{{ post.name }}</div>
       <div class="content">{{ post.caption }}</div>
       <div ng-if="post.mine" class="clearfix">
         <button class="btn btn-link pull-right" ng-click="delete(post)">Delete</button>
@@ -33,24 +34,18 @@
     <div class="panel-body">
 
       <!-- comments -->
-      <!-- form -->
-      <div class="reply">
-        <form ng-submit="reply(post)">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="コメント" ng-model="post.reply_comment">
-          </div>
-        </form>
-      </div>
-      <!-- form end -->
-
       <div class="no-comment" ng-if="post.comments == null || post.comments.length==0">
         コメントなし
       </div>
 
 
       <div ng-if="post.comments.length>0" class="comment-list">
+        <div ng-if="post.comments.length>post.show_comment_num" class="more-comment clearfix">
+          <button class="btn btn-link btn-xs pull-right" ng-click="add_show_comment_num(post)">コメントを表示</button>
+        </div>
+
         <ul>
-          <li class="comment" ng-repeat='comment in post.comments | orderBy:"created_at":true | limitTo:post.show_comment_num'>
+          <li class="comment" ng-repeat='comment in post.comments | orderBy:"created_at":true | limitTo:post.show_comment_num | orderBy:"created_at":false'>
             <div class="clearfix">
               <img class="pull-left" ng-src="https://www.flat.place/static/share/assets/img/icon/{{ comment.icon_id }}.png" width="20px" height="20px" />
  	            <div class="pull-left created-date">
@@ -61,17 +56,26 @@
                   <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ comment.dislike_count }}
 	            </div>
 	          </div>
+	          <div class="company" ng-if="comment.name">{{ comment.name }}</div>
 	          <div class="content">{{ comment.content }}</div>
             <div ng-if="comment.mine" class="clearfix">
               <button class="btn btn-link pull-right" ng-click="delete_comment(post, comment)">Delete</button>
             </div>
 	        </li>
         </ul>
-        <div ng-if="post.comments.length>post.show_comment_num" class="more-comment clearfix">
-          <button class="btn btn-link btn-xs pull-right" ng-click="add_show_comment_num(post)">もっとみる</button>
-        </div>
       </div>
       <!-- comments end -->
+
+      <!-- form -->
+      <div class="reply">
+        <form ng-submit="reply(post)">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="コメント" ng-model="post.reply_comment">
+          </div>
+        </form>
+      </div>
+      <!-- form end -->
+
 
     </div>
 
