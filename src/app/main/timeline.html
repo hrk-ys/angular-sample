@@ -14,7 +14,10 @@
       <div class="clearfix">
         <img class="pull-left" ng-src="https://www.flat.place/static/share/assets/img/icon/{{ post.icon_id }}.png" width="20px" height="20px" />
 	      <div class="pull-left created-date">
-	        <div class="">{{ post.created_at*1000 | date:'yyyy-MM-dd hh:mm:ss' }}</div>
+           <div>
+             <div>{{ post.created_at*1000 | date:'yyyy-MM-dd HH:mm:ss' }}</div>
+             <div>{{ post.created_at | timeago }}</div>
+           </div>
         </div>
 		    <div class="pull-right">
           <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{ post.comment_count }}
@@ -23,7 +26,7 @@
 		    </div>
 	    </div>
       <div class="company">{{ post.name }}</div>
-      <div class="content">{{ post.caption }}</div>
+      <div class="content" ng-bind-html="post.caption | linky "></div>
       <div ng-if="post.mine" class="clearfix">
         <button class="btn btn-link pull-right" ng-click="delete(post)">Delete</button>
       </div>
@@ -47,9 +50,16 @@
         <ul>
           <li class="comment" ng-repeat='comment in post.comments | orderBy:"created_at":true | limitTo:post.show_comment_num | orderBy:"created_at":false'>
             <div class="clearfix">
-              <img class="pull-left" ng-src="https://www.flat.place/static/share/assets/img/icon/{{ comment.icon_id }}.png" width="20px" height="20px" />
+              <div class="pull-left">
+                <img ng-src="https://www.flat.place/static/share/assets/img/icon/{{ comment.icon_id }}.png" width="20px" height="20px" />
+                <div class="comment-index">{{ comment.comment_index | cindex }}</div>
+              </div>
+              
  	            <div class="pull-left created-date">
-	              <div class="pull-left">{{ comment.created_at*1000 | date:'yyyy-MM-dd hh:mm:ss' }}</div>
+                <div class="pull-left">
+                  <div>{{ comment.created_at*1000 | date:'yyyy-MM-dd HH:mm:ss' }}</div>
+                  <div>{{ comment.created_at | timeago }}</div>
+                </div>
               </div>
 		          <div class="pull-right">
                   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ comment.like_count }}
@@ -57,7 +67,7 @@
 	            </div>
 	          </div>
 	          <div class="company" ng-if="comment.name">{{ comment.name }}</div>
-	          <div class="content">{{ comment.content }}</div>
+            <div class="content" ng-bind-html=" comment.content | linky "></div>
             <div ng-if="comment.mine" class="clearfix">
               <button class="btn btn-link pull-right" ng-click="delete_comment(post, comment)">Delete</button>
             </div>

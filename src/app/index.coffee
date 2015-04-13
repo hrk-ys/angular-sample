@@ -45,3 +45,19 @@ angular.module 'angularSample', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
     templateUrl: 'app/main/timeline.html',
     scope: { title: '@' }
     controller: 'Timeline'
+
+  .filter 'timeago', () ->
+    (input) ->
+      diff = parseInt((new Date)/1000) - input
+      t = ['秒前', '分前', '時間前']
+
+      str = ''
+      angular.forEach t, (v) ->
+        if diff > 0
+          str = diff + v
+          diff = parseInt(diff / 60)
+      str
+
+  .filter 'cindex', () ->
+    (input) ->
+      ("00" + input).substr(-3)
