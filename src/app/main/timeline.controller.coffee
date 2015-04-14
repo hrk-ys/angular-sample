@@ -8,6 +8,7 @@ angular.module "angularSample"
 
     $scope.posts = []
     $scope.cursor = 0
+    console.log($scope.last_access_at)
 
 
     $scope.post = () ->
@@ -97,6 +98,5 @@ angular.module "angularSample"
             p.sort_value = v.sort_value
             $scope.posts.push p
             $scope.cursor = v.sort_value if $scope.cursor == 0 || $scope.cursor > v.sort_value
-        console.log( $scope.cursor )
   
     $scope.load_content()

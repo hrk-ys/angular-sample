@@ -43,19 +43,27 @@ angular.module 'angularSample', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
   .directive 'timeline', ()->
     restrict: 'EA'
     templateUrl: 'app/main/timeline.html',
-    scope: { title: '@' }
+    scope: {
+      title: '@'
+      last_access_at: '=lastAccessAt'
+    }
     controller: 'Timeline'
 
   .filter 'timeago', () ->
     (input) ->
       diff = parseInt((new Date)/1000) - input
-      t = ['秒前', '分前', '時間前']
+      t = [
+        ['秒前', 60],
+        ['分前', 60],
+        ['時間前', 60],
+        ['日前', 24]
+      ]
 
       str = ''
       angular.forEach t, (v) ->
         if diff > 0
-          str = diff + v
-          diff = parseInt(diff / 60)
+          str = diff + v[0]
+          diff = parseInt(diff / v[1])
       str
 
   .filter 'cindex', () ->

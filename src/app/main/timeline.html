@@ -10,13 +10,14 @@
 <div class="row">
   <div class="post panel-default" ng-repeat='post in posts | orderBy:"sort_value":true'>
     <!-- post -->
-    <div class="panel-heading">
+    <div class="panel-heading" ng-class="{new: post.created_at > last_access_at}">
       <div class="clearfix">
         <img class="pull-left" ng-src="https://www.flat.place/static/share/assets/img/icon/{{ post.icon_id }}.png" width="20px" height="20px" />
 	      <div class="pull-left created-date">
            <div>
-             <div>{{ post.created_at*1000 | date:'yyyy-MM-dd HH:mm:ss' }}</div>
+             <!-- <div>{{ post.created_at*1000 | date:'yyyy-MM-dd HH:mm:ss' }}</div> -->
              <div>{{ post.created_at | timeago }}</div>
+             <div class="company">{{ post.name }}</div>
            </div>
         </div>
 		    <div class="pull-right">
@@ -25,8 +26,7 @@
           <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ post.dislike_count }}
 		    </div>
 	    </div>
-      <div class="company">{{ post.name }}</div>
-      <div class="content" ng-bind-html="post.caption | linky "></div>
+      <div class="content" ng-bind-html="post.caption | linky:'_blank' "></div>
       <div ng-if="post.mine" class="clearfix">
         <button class="btn btn-link pull-right" ng-click="delete(post)">Delete</button>
       </div>
@@ -48,7 +48,9 @@
         </div>
 
         <ul>
-          <li class="comment" ng-repeat='comment in post.comments | orderBy:"created_at":true | limitTo:post.show_comment_num | orderBy:"created_at":false'>
+          <li class="comment"
+              ng-repeat='comment in post.comments | orderBy:"created_at":true | limitTo:post.show_comment_num | orderBy:"created_at":false' ng-class="{new: comment.created_at > last_access_at}" >
+              
             <div class="clearfix">
               <div class="pull-left">
                 <img ng-src="https://www.flat.place/static/share/assets/img/icon/{{ comment.icon_id }}.png" width="20px" height="20px" />
@@ -57,8 +59,9 @@
               
  	            <div class="pull-left created-date">
                 <div class="pull-left">
-                  <div>{{ comment.created_at*1000 | date:'yyyy-MM-dd HH:mm:ss' }}</div>
+                  <!-- <div>{{ comment.created_at*1000 | date:'yyyy-MM-dd HH:mm:ss' }}</div> -->
                   <div>{{ comment.created_at | timeago }}</div>
+	                <div class="company" ng-if="comment.name">{{ comment.name }}</div>
                 </div>
               </div>
 		          <div class="pull-right">
@@ -66,8 +69,7 @@
                   <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ comment.dislike_count }}
 	            </div>
 	          </div>
-	          <div class="company" ng-if="comment.name">{{ comment.name }}</div>
-            <div class="content" ng-bind-html=" comment.content | linky "></div>
+            <div class="content" ng-bind-html=" comment.content | linky:'_blank' "></div>
             <div ng-if="comment.mine" class="clearfix">
               <button class="btn btn-link pull-right" ng-click="delete_comment(post, comment)">Delete</button>
             </div>
