@@ -1,40 +1,39 @@
-<h4>{{ title }}</h4>
-
-<form class="post-form">
-  <div class="form-group">
-    <textarea class="form-control" row="3" ng-model="content"></textarea>
-  </div>
-  <button type="submit" class="btn btn-primary" ng-click="post()">投稿</button>
-</form>
-
 <div class="row">
-  <div class="post panel-default" ng-repeat='post in posts | orderBy:"sort_value":true'>
+  <div class="post-wrap row-same-height clearfix" ng-repeat='post in posts | orderBy:["sort_value","src_type"]:true track by $index'>
     <!-- post -->
-    <div class="panel-heading" ng-class="{new: post.created_at > last_access_at}">
-      <div class="clearfix">
-        <img class="pull-left" ng-src="https://www.flat.place/static/share/assets/img/icon/{{ post.icon_id }}.png" width="20px" height="20px" />
-	      <div class="pull-left created-date">
-           <div>
-             <!-- <div>{{ post.created_at*1000 | date:'yyyy-MM-dd HH:mm:ss' }}</div> -->
-             <div>{{ post.created_at | timeago }}</div>
-             <div class="company">{{ post.name }}</div>
-           </div>
-        </div>
-		    <div class="pull-right">
-          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{ post.comment_count }}
-          <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ post.like_count }}
-          <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ post.dislike_count }}
-		    </div>
-	    </div>
-      <div class="content" ng-bind-html="post.caption | linky:'_blank' "></div>
-      <div ng-if="post.mine" class="clearfix">
-        <button class="btn btn-link pull-right" ng-click="delete(post)">Delete</button>
-      </div>
+    <div class="col-lg-5 col-full-height cell-{{ post.post_id }}" ng-class="{new: post.created_at > last_access_at}">
+      <div class="post">
+        <div class="clearfix">
+          <img class="pull-left" ng-src="https://www.flat.place/static/share/assets/img/icon/{{ post.icon_id }}.png" width="75px" height="75px" />
+	        <div class="pull-left post-info">
+             <div>
+               <div>
+                 <span ng-class="{
+                   'room-post-header':post.src_type==1,
+                   'lounge-post-header':post.src_type==2
+                   }"
+                   class="post-header">{{ post.timeline.title }}</span>
+               </div>
+               <div>{{ post.created_at | timeago }}</div>
+               <div ng-if="post.name" class="company margin-top-s">{{ post.name }}</div>
+             </div>
+             <ul class="list-inline margin-top-s">
+               <li><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{ post.comment_count }}</li>
+               <li><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ post.like_count }}</li>
+               <li><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ post.dislike_count }}</li>
+             </ul>
+		      </div>
+          <div ng-if="post.mine" class="clearfix">
+            <button class="btn btn-link pull-right" ng-click="delete(post)"><span class="glyphicon glyphicon-trash"></span></button>
+          </div>
+	      </div>
+        <div class="content post-content" ng-bind-html="post.caption | linky:'_blank' "></div>
+      </div><!-- post -->
 	  </div>
     <!-- post end -->
 
 
-    <div class="panel-body">
+    <div class="col-lg-7 col-full-height comment-wrap">
 
       <!-- comments -->
       <div class="no-comment" ng-if="post.comments == null || post.comments.length==0">
@@ -44,7 +43,7 @@
 
       <div ng-if="post.comments.length>0" class="comment-list">
         <div ng-if="post.comments.length>post.show_comment_num" class="more-comment clearfix">
-          <button class="btn btn-link btn-xs pull-right" ng-click="add_show_comment_num(post)">コメントを表示</button>
+          <button class="btn btn-link btn-xs" ng-click="add_show_comment_num(post)">コメントを表示</button>
         </div>
 
         <ul>
@@ -53,26 +52,32 @@
               
             <div class="clearfix">
               <div class="pull-left">
-                <img ng-src="https://www.flat.place/static/share/assets/img/icon/{{ comment.icon_id }}.png" width="20px" height="20px" />
-                <div class="comment-index">{{ comment.comment_index | cindex }}</div>
+                <img ng-src="https://www.flat.place/static/share/assets/img/icon/{{ comment.icon_id }}.png" width="40px" height="40px" />
               </div>
               
- 	            <div class="pull-left created-date">
-                <div class="pull-left">
-                  <!-- <div>{{ comment.created_at*1000 | date:'yyyy-MM-dd HH:mm:ss' }}</div> -->
-                  <div>{{ comment.created_at | timeago }}</div>
-	                <div class="company" ng-if="comment.name">{{ comment.name }}</div>
-                </div>
-              </div>
-		          <div class="pull-right">
-                  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ comment.like_count }}
-                  <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ comment.dislike_count }}
+              <div class="pull-left post-info">
+
+                <ul class="list-inline">
+                  <li><div>{{ comment.created_at | timeago }}</div></li>
+                  <li><div class="comment-index">{{ comment.comment_index | cindex }}</div></li>
+                  <li><div class="company" ng-if="comment.name">{{ comment.name }}</div></li>
+                  <li><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ comment.like_count }}</li>
+                  <li><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ comment.dislike_count }}</li>
+                  <li>
+                   </li>
+                </ul>
+
+                <div class="content" ng-bind-html=" comment.content | linky:'_blank' "></div>
+
 	            </div>
+
+              <div class="pull-right">
+                    <div ng-if="comment.mine">
+                      <button class="btn btn-link " ng-click="delete_comment(post, comment)"><span class="glyphicon glyphicon-trash"></span></button>
+                     </div>
+              </div>
 	          </div>
-            <div class="content" ng-bind-html=" comment.content | linky:'_blank' "></div>
-            <div ng-if="comment.mine" class="clearfix">
-              <button class="btn btn-link pull-right" ng-click="delete_comment(post, comment)">Delete</button>
-            </div>
+
 	        </li>
         </ul>
       </div>
@@ -90,6 +95,7 @@
 
 
     </div>
+    <!-- col-lg-4 -->
 
   </div>
 

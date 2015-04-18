@@ -8,6 +8,8 @@ angular.module "angularSample"
       company: null
       domain: null
 
+      server_settings: null
+
       load: ()->
         console.log('user load')
         this.is_auth = storage.get('is_auth')
@@ -15,6 +17,7 @@ angular.module "angularSample"
         this.email   = storage.get('email')
         this.company = storage.get('company')
         this.domain  = storage.get('domain')
+        this.service_setting  = storage.get('service_setting')
         console.log( this )
 
       save: ()->
@@ -24,6 +27,17 @@ angular.module "angularSample"
         storage.set('email', this.email)
         storage.set('company', this.company)
         storage.set('domain', this.domain)
+        storage.set('service_setting', this.service_setting)
+
+      get_updates: () ->
+        self = this
+        Api.req('/account/get_updates', {})
+          .then (data) ->
+            console.log(data)
+            self.service_setting =
+              'lounges': data.result.updates.service_setting.lounges
+            self.save()
+            
 
       # メール登録
       signup: (email) ->
@@ -52,6 +66,9 @@ angular.module "angularSample"
           self.email   = data.result.email
           self.is_auth = true
           self.save()
+
+      logout: () ->
+        storage.clearAll()
 
     User.load()
     User

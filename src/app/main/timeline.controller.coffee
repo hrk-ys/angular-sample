@@ -1,20 +1,49 @@
 angular.module "angularSample"
-  .controller "Timeline", (Api, $scope,  $element, $attrs) ->
-    src_id   = $attrs.srcId
-    src_type = $attrs.srcType
+  .controller "TimelineCtrl", (Api, $scope, Timelines) ->
 
     SHOW_COMMENT_NUM = 3
-    console.log( "src_id: " + src_id + " src_type: " + src_type )
+
+    timelines = Timelines
 
     $scope.posts = []
     $scope.cursor = 0
-    console.log($scope.last_access_at)
+    $scope.timelines = timelines
+
+    sync_posts = () ->
+      $scope.posts.length = 0
+      angular.forEach timelines, (v) ->
+        angular.forEach v.posts, (vp) ->
+          $scope.posts.push vp
+
+    angular.forEach timelines, (v) ->
+      console.log(v)
+      v.load_content().then( () ->
+        sync_posts()
+      )
+
+    sync_posts()
+      
+    resolveTimeline = (post) ->
+      timeline = null
+      console.log(post.src_id)
+      console.log(post.src_type)
+      angular.forEach timelines, (v) ->
+        console.log(v.src_id)
+        console.log(v.src_type)
+        if post.src_id == v.src_id && post.src_type == v.src_type
+          timeline = v
+      console.log(timeline)
+      return timeline
 
 
-    $scope.post = () ->
+    $scope.$on 'PostUpdated', () ->
+      console.log("post_callback")
+      sync_posts()
+
+    $scope.post = (timeline) ->
       Api.req('/post/post',
-        src_id: src_id
-        src_type: src_type
+        src_id: timeline.src_id
+        src_type: timeline.src_type
         caption: $scope.content
         icon_id: Math.ceil(Math.random()*34 + 1)
         icon_color: Math.ceil(Math.random()*4 + 1)
@@ -22,9 +51,12 @@ angular.module "angularSample"
         console.log(data)
         $scope.content = ""
         p = data.result.models.post
-        p.comments = []
+        timeline.setup_post(p)
+        
         p.sort_value = data.result.models.timelines[0].sort_value
-        $scope.posts.push p
+        timeline.posts.push p
+        console.log(p)
+        sync_posts()
 
     $scope.reply = (post) ->
       Api.req('/post/add_comment',
@@ -46,14 +78,19 @@ angular.module "angularSample"
       ).then (data) ->
         console.log(data)
 
+        timeline = resolveTimeline(post)
         i = 0
-        angular.forEach $scope.posts, (v) ->
-          if v.post_id == post.post_id
-            return
-          i++
-        $scope.posts.splice(i, 1)
+        index = -1
+        angular.forEach timeline.posts, (v) ->
+          if index == -1
+            if v.post_id == post.post_id
+              index = i
+            i++
+        timeline.posts.splice(i, 1)
+        sync_posts()
 
     $scope.delete_comment = (post, comment) ->
+
       Api.req('/post/delete_comment',
         post_comment_id: comment.post_comment_id
       ).then (data) ->
@@ -68,35 +105,4 @@ angular.module "angularSample"
 
 
 
-    $scope.load_content = () ->
-      
-      Api.req('/post/get_timeline2',
-        list_type: 3
-        src_type: src_type
-        src_id: src_id
-        cursor:
-          before: $scope.cursor)
-      .then (data) ->
-  
-        post_map = {}
-  
-        $scope.has_more = data.result.models.posts.length == 20
-        angular.forEach data.result.models.posts, (v) ->
-          if v.status == "1"
-            post_map[v.post_id] = v
-            v.comments = []
-            v.show_comment_num = SHOW_COMMENT_NUM
-  
-        console.log(data)
-        angular.forEach data.result.models.post_comments, (v) ->
-          if v.status == "1"
-            post_map[v.post_id].comments.push v
-  
-        angular.forEach data.result.models.timelines, (v) ->
-          if v.status == "1"
-            p = post_map[v.post_id]
-            p.sort_value = v.sort_value
-            $scope.posts.push p
-            $scope.cursor = v.sort_value if $scope.cursor == 0 || $scope.cursor > v.sort_value
-  
-    $scope.load_content()
+

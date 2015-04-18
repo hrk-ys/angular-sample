@@ -2,9 +2,13 @@ angular.module 'angularSample', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
   .config ($locationProvider, $stateProvider, $urlRouterProvider) ->
     $stateProvider
       .state "home",
-        url: "/",
         templateUrl: "app/main/main.html",
         controller: "MainCtrl"
+        
+      .state "home.all",
+        url: '/'
+        templateUrl: "app/main/timeline.html",
+        controller: "TimelineCtrl"
 
       .state "room",
         url: "/room",
@@ -28,26 +32,27 @@ angular.module 'angularSample', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
 
     $locationProvider.html5Mode(true)
 
-  .run ($rootScope, $location, User) ->
+  .run ($rootScope, $window, $location, User) ->
+
+    User.get_updates()
 
     $rootScope.$on '$stateChangeStart', () ->
-      console.log('root change : ' + $location.path())
       if User.is_auth
         if $location.path().match(/^\/signup/)
           $location.path('/')
         return
       if !$location.path().match(/^\/signup/)
-        $location.path('/signup')
+        $window.location.href = '/signup'
 
 
-  .directive 'timeline', ()->
-    restrict: 'EA'
-    templateUrl: 'app/main/timeline.html',
-    scope: {
-      title: '@'
-      last_access_at: '=lastAccessAt'
-    }
-    controller: 'Timeline'
+#  .directive 'timeline', ()->
+#    restrict: 'EA'
+#    templateUrl: 'app/main/timeline.html',
+#    scope: {
+#      title: '@'
+#      last_access_at: '=lastAccessAt'
+#    }
+#    controller: 'TimelineCtrl'
 
   .filter 'timeago', () ->
     (input) ->

@@ -1,6 +1,12 @@
 $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 
+
+$brand-primary:         #FFA500 !default; // #337ab7
+$grid-gutter-width:     0px !default;
 /* Do not remove this comments bellow. It's the markers used by wiredep to inject
    sass dependencies when defined in the bower.json of your dependencies */
 // bower:scss
+$room-color:            #FFA500 !default; // #337ab7
+$lounge-color:          #2ca4f5 !default; // #337ab7
 // endbower
+
