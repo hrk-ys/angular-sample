@@ -1,7 +1,7 @@
 <div class="row">
   <div class="post-wrap row-same-height clearfix" ng-repeat='post in posts | orderBy:["sort_value","src_type"]:true track by $index'>
     <!-- post -->
-    <div class="col-lg-5 col-full-height cell-{{ post.post_id }}" ng-class="{new: post.created_at > last_access_at}">
+    <div class="col-sm-5 col-full-height cell-{{ post.post_id }}" ng-class="{new: post.created_at > last_access_at}">
       <div class="post">
         <div class="clearfix">
           <img class="pull-left" ng-src="https://www.flat.place/static/share/assets/img/icon/{{ post.icon_id }}.png" width="75px" height="75px" />
@@ -33,7 +33,7 @@
     <!-- post end -->
 
 
-    <div class="col-lg-7 col-full-height comment-wrap">
+    <div class="col-sm-7 col-full-height comment-wrap">
 
       <!-- comments -->
       <div class="no-comment" ng-if="post.comments == null || post.comments.length==0">
