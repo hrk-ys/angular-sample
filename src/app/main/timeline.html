@@ -50,32 +50,30 @@
           <li class="comment"
               ng-repeat='comment in post.comments | orderBy:"created_at":true | limitTo:post.show_comment_num | orderBy:"created_at":false' ng-class="{new: comment.created_at > last_access_at}" >
               
-            <div class="clearfix">
-              <div class="pull-left">
+            <div class="media">
+              <div class="media-left">
                 <img ng-src="https://www.flat.place/static/share/assets/img/icon/{{ comment.icon_id }}.png" width="40px" height="40px" />
               </div>
               
-              <div class="pull-left post-info">
+              <div class="media-body">
 
-                <ul class="list-inline">
+                <div class="clearfix">
+                <ul class="list-inline pull-left comment-info">
                   <li><div>{{ comment.created_at | timeago }}</div></li>
                   <li><div class="comment-index">{{ comment.comment_index | cindex }}</div></li>
                   <li><div class="company" ng-if="comment.name">{{ comment.name }}</div></li>
                   <li><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ comment.like_count }}</li>
                   <li><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{ comment.dislike_count }}</li>
-                  <li>
-                   </li>
                 </ul>
+                  <div ng-if="comment.mine" class="pull-right">
+                    <button class="btn btn-link " ng-click="delete_comment(post, comment)"><span class="glyphicon glyphicon-trash"></span></button>
+                   </div>
+                </div>
 
-                <div class="content" ng-bind-html=" comment.content | linky:'_blank' "></div>
+                <div class="content comment-content pull-left" ng-bind-html=" comment.content | linky:'_blank' "></div>
+
 
 	            </div>
-
-              <div class="pull-right">
-                    <div ng-if="comment.mine">
-                      <button class="btn btn-link " ng-click="delete_comment(post, comment)"><span class="glyphicon glyphicon-trash"></span></button>
-                     </div>
-              </div>
 	          </div>
 
 	        </li>

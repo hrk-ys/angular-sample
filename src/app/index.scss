@@ -129,8 +129,15 @@ li {
     margin-top: 8px;
     padding-top: 8px;
     border-top: 1px solid rgb(202, 202, 202);
+    .comment-info {
+      padding-top: 4px;
+    }
 	.comment-index {
 	}
+    .comment-content {
+      line-height: 1.6em;
+      padding-bottom: 8px;
+    }
   }
 }
 .no-comment {

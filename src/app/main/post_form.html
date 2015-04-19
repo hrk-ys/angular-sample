@@ -1,0 +1,15 @@
+<script type="text/ng-template" id="myModalContent.html">
+<form name="myForm" class="post-form">
+  <div class="form-group">
+    <select class="form-control" ng-options="timeline.title for timeline in timelines" ng-model="selected" />
+  </div>
+  <div class="form-group">
+    <textarea class="form-control" row="5" ng-model="content" ng-minlength="5" placeholder="会社で普段聞け無いことを同僚に聞いてみよう！※5文字以下は投稿できません。" required></textarea>
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary btn-submit" ng-disabled="!myForm.$valid" ng-click="post(selected)">投稿</button>
+  </div>
+  <a href="" class="" ng-click="cancel()">キャンセル</a>
+</form>
+</script>
+<a href="" class="" ng-click="open_post_form()">投稿</a>
