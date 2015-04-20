@@ -56,18 +56,21 @@ angular.module 'angularSample', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
 
   .filter 'timeago', () ->
     (input) ->
+
       diff = parseInt((new Date)/1000) - input
       t = [
-        ['秒前', 60],
-        ['分前', 60],
-        ['時間前', 60],
-        ['日前', 24]
+        ['秒前',   60],
+        ['分前',   60],
+        ['時間前', 24],
+        ['日前',   null]
       ]
 
       str = ''
       angular.forEach t, (v) ->
-        if diff > 0
+        if str=='' && (v[1] == null || diff < v[1])
           str = diff + v[0]
+
+        if v[1] != null
           diff = parseInt(diff / v[1])
       str
 

@@ -18,7 +18,6 @@ angular.module "angularSample"
         this.company = storage.get('company')
         this.domain  = storage.get('domain')
         this.service_setting  = storage.get('service_setting')
-        console.log( this )
 
       save: ()->
         console.log('user save')
