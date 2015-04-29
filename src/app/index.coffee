@@ -10,6 +10,11 @@ angular.module 'angularSample', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
         templateUrl: "app/main/timeline.html",
         controller: "TimelineCtrl"
 
+      .state "home.post",
+        url: '/post/{post_id:[0-9]+}',
+        templateUrl: 'app/main/post_detail.html',
+        controller: 'PostDetailCtrl',
+
       .state "room",
         url: "/room",
         templateUrl: "app/main/room.html",

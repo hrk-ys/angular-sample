@@ -10,11 +10,10 @@
 </script>
 
 <div class="row">
-  <div class="post-wrap row-same-height clearfix" ng-repeat='post in posts | orderBy:["sort_value","src_type"]:true track by $index'>
+  <div class="post-wrap row-same-height clearfix">
     <!-- post -->
     <div class="col-sm-5 col-full-height cell-{{ post.post_id }}" ng-class="{new: post.created_at > last_access_at}">
       <div class="post">
-        <a ng-href="/post/{{post.post_id}}" class="detail-link">
           <div class="clearfix">
             <img class="pull-left" ng-src="https://www.flat.place/static/share/assets/img/icon/{{ post.icon_id }}.png" width="75px" height="75px" />
 	          <div class="pull-left post-info">
@@ -39,7 +38,6 @@
               <button class="btn btn-link pull-right" ng-click="delete(post)"><span class="glyphicon glyphicon-trash"></span></button>
             </div>
 	        </div>
-        </a>
         <div class="content post-content" ng-bind-html="post.caption | linky:'_blank' "></div>
       </div><!-- post -->
 	  </div>
@@ -55,13 +53,13 @@
 
 
       <div ng-if="post.comments.length>0" class="comment-list">
-        <div ng-if="post.comments.length>post.show_comment_num" class="more-comment clearfix">
+        <div ng-if="post.comments.length>show_comment_num" class="more-comment clearfix">
           <button class="btn btn-link btn-xs" ng-click="add_show_comment_num(post)">コメントを表示</button>
         </div>
 
         <ul>
           <li class="comment"
-              ng-repeat='comment in post.comments | orderBy:"created_at":true | limitTo:post.show_comment_num | orderBy:"created_at":false' ng-class="{new: comment.created_at > last_access_at}" >
+              ng-repeat='comment in post.comments | orderBy:"post_comment_id":true | limitTo:show_comment_num | orderBy:"post_comment_id":false' ng-class="{new: comment.created_at > last_access_at}" >
               
             <div class="media">
               <div class="media-left">

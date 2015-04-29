@@ -153,6 +153,9 @@ li {
   li:first-child {
     border-top: none;
   }
+  .detail-link {
+    color: inherit;
+  }
   .post-wrap {
     margin: 15px;
     background-color: #fff;

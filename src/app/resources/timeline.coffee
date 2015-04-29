@@ -22,6 +22,14 @@ angular.module "angularSample"
         post.timeline = this
         post.comments = []
 
+      get_post: (post_id) ->
+        console.log("get_post: " + post_id)
+        post = null
+        angular.forEach @posts, (v) ->
+          if post == null && v.post_id == post_id
+            post = v
+        post
+
       load_content: () ->
         console.log('get_timeline2')
         self = this
