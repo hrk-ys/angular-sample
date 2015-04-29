@@ -91,7 +91,7 @@ li {
 }
 
 @media (max-width: $screen-menu-min) {
-  body { padding-top: 50px; }
+  .timeline { padding-top: 50px; }
 }
 
 @media (min-width: $screen-menu-min) {
@@ -118,6 +118,26 @@ li {
   word-wrap: break-word;
 }
 
+.jumbotron {
+  background-color: #fff;
+}
+.signup {
+  h4 {
+    //text-align: center;
+    padding-bottom: 16px;
+  }
+  .description {
+  }
+  .btn-primary {
+    width: 100%;
+  }
+  ul {
+    padding-left: 20px;
+    li {
+      list-style:inherit;
+    }
+  }
+}
 @media (min-width: $screen-menu-min) {
 .timeline {
     padding-left: 250px;

@@ -1,8 +1,16 @@
+  <h4>会社でお使いのメールアドレスを入力してください</h4>
   <form>
     <div class="form-group">
-      <label for="exampleInputEmail1">Email address</label>
-      <input type="email" class="form-control" ng-model="email" id="exampleInputEmail1" placeholder="Enter email">
+      <input type="email" class="form-control" ng-model="email" id="exampleInputEmail1" placeholder="メールアドレス">
     </div>
-    <button ng-click="submit()" type="submit" class="btn btn-primary">Submit</button>
+    <div class="text-center">
+      <button ng-click="submit()" type="submit" class="btn btn-primary">送信</button>
+    </div>
   </form>
 
+  <div class="description text-muted margin-top-m">
+    <ul>
+      <li>入力されたメールアドレス宛てに、あなたが会社に所属していることを確認するための認証コードを送信します。</li>
+      <li>本人が特定されることはありません。</li>
+    </ul>
+  </div>
