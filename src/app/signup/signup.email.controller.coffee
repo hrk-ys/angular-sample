@@ -1,6 +1,6 @@
 angular.module "angularSample"
   .controller "SignupEmail", ($scope, $location, User) ->
-    if User.email == null 
+    if User.email == null
       $scope.email = ""
     else
       $scope.email = User.email.email
