@@ -42,6 +42,7 @@ angular.module "angularSample"
       signup: (email) ->
         console.log('tapped signup')
         self = this
+        this.email = {email: email}
         
         Api.req '/account/signup',
           email: email

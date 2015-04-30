@@ -1,6 +1,9 @@
 angular.module "angularSample"
   .controller "SignupEmail", ($scope, $location, User) ->
-    $scope.email = User.email
+    if User.email == null 
+      $scope.email = ""
+    else
+      $scope.email = User.email.email
     $scope.submit = ()->
       console.log("input email: " + $scope.email)
       User.signup($scope.email)

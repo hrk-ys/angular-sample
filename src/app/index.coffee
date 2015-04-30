@@ -39,7 +39,8 @@ angular.module 'angularSample', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
 
   .run ($rootScope, $window, $location, User) ->
 
-    User.get_updates()
+    if User.is_auth
+      User.get_updates()
 
     $rootScope.$on '$stateChangeStart', () ->
       if User.is_auth
