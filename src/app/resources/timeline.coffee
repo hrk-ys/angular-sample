@@ -2,8 +2,9 @@ angular.module "angularSample"
   .factory 'Timelines', (Timeline, User) ->
     timelines = []
     timelines.push new Timeline('ルーム', User.company.company_id, 1)
-    angular.forEach User.service_setting.lounges, (v) ->
-      timelines.push new Timeline(v.name, v.lounge_id, 2)
+    if User.service_setting
+      angular.forEach User.service_setting.lounges, (v) ->
+        timelines.push new Timeline(v.name, v.lounge_id, 2)
     timelines
 
   .service 'Timeline', (storage, Api) ->

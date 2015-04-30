@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var browserSync = require('browser-sync');
 var browserSyncSpa = require('browser-sync-spa');
+var run = require('gulp-run');
 
 var util = require('util');
 
@@ -46,6 +47,11 @@ module.exports = function(options) {
 
   gulp.task('serve:dist', ['build'], function () {
     browserSyncInit(options.dist);
+    run('scp -r dist sakuravps:~/angular-sample/');
+  });
+  gulp.task('serve:deploy', ['build'], function () {
+    browserSyncInit(options.dist);
+    run('scp -r dist sakuravps:~/angular-sample/');
   });
 
   gulp.task('serve:e2e', ['inject'], function () {
