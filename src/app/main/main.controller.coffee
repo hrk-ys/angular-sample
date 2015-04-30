@@ -5,6 +5,7 @@ angular.module "angularSample"
     $scope.last_access_at = storage.get('last_access_at')
     storage.set('last_access_at', parseInt((new Date)/1000))
 
+    $scope.window = $window
     $scope.timelines = Timelines
 
     $scope.reload = () ->
